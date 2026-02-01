@@ -1,0 +1,22 @@
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
+metadata:
+  name: vitagraphs-pg-cluster
+  labels:
+    app.kubernetes.io/name: vitagraphs
+    app.kubernetes.io/part-of: vitagraphs
+spec:
+  imageCatalogRef:
+    apiGroup: postgresql.cnpg.io
+    kind: ClusterImageCatalog
+    name: postgresql-minimal-trixie
+    major: 18
+  instances: 2
+  storage:
+    size: 16Gi
+  bootstrap:
+    initdb:
+      database: vitagraphs
+      owner: juby
+      secret:
+        name: juby-secret

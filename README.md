@@ -6,7 +6,7 @@ Homelab Kubernetes setup, using `kubeadmn` on Rapberry Pis. Used [official](http
 - CRI: containerd
 - CNI: Cilium
 - Helm: managing pods
-- Argo: [GitOps](https://about.gitlab.com/topics/gitops/) which essentially syncs the actual cluster to config files in GitHub to
+- ArgoCD: [GitOps](https://about.gitlab.com/topics/gitops/) which essentially syncs the actual cluster to config files in GitHub to
 
 # Setting Up New Raspberry Pi 5
 
@@ -189,9 +189,43 @@ $ kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/
 
 ### Connect to Control Node From Laptop
 
-For running kubectl commands and maintaining, very useful for port forwarding. Note, to get this to work in Iterm2 on MacOS I had to give Iterm2 local network permissions, and to do that I had to restart Iterm2 and run `telnet <RPI_IP> 6443`. Not the most fun thing to figure out.
+For running kubectl commands and maintaining, very useful for port forwarding. Note, to get this to work in Iterm2 on MacOS I had to give Iterm2 local network permissions, and to do that I had to restart Iterm2 and run `telnet <RPI_IP> 6443`. Not the most fun thing to figure out, also a transient fix so I recommend other terminals when possible.
 
 ```bash
 $ ssh $USERNAME@$PI_IP_ADDRESS$ "sudo cat /etc/kubernetes/admin.conf" > ~/.kube/config-pi
 $ export KUBECONFIG=~/.kube/config-pi
+```
+
+### Connect to ArgoCD
+
+Connect using port forwarding on personal computer.
+
+```bash
+$ kubectl -n argocd port-forward svc/argocd-server 8443:443 --address 127.0.0.1
+```
+
+Print argocd password with:
+
+```bash
+kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 --decode; echo
+```
+
+Then in the browser navigate to `https://localhost:8443` to login.
+
+### Setup ArgoCD
+
+Create SSH key and add to the repository section in the UI.
+
+### Install K8s Operators
+
+[CloudNativePG (Postgres)](https://cloudnative-pg.io/docs/1.28/installation_upgrade):
+
+```bash
+# Operator
+kubectl apply --server-side -f \
+  https://raw.githubusercontent.com/cloudnative-pg/cloudnative-pg/release-1.28/releases/cnpg-1.28.0.yaml
+
+# PG Image
+kubectl apply -f \
+  https://raw.githubusercontent.com/cloudnative-pg/artifacts/refs/heads/main/image-catalogs/catalog-minimal-trixie.yaml
 ```
