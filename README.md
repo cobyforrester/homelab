@@ -228,6 +228,14 @@ Telegram Bot Token
     --namespace=openclaw
 ```
 
+Telegram Allow From
+
+```bash
+  kubectl create secret generic telegram-allow-from \
+    --from-literal=value=$VALUE \
+    --namespace=openclaw
+```
+
 # Maintaining
 
 ### Connect to Control Node From Laptop

@@ -21,6 +21,29 @@ spec:
       securityContext:
         fsGroup: 1000
         runAsNonRoot: true
+      initContainers:
+        - name: config-init
+          image: busybox:1.36
+          command:
+            - sh
+            - -c
+            - envsubst '${TELEGRAM_BOT_TOKEN} ${TELEGRAM_ALLOW_FROM}' < /templates/openclaw.json.tmpl > /config/openclaw.json
+          env:
+            - name: TELEGRAM_BOT_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: telegram-token
+                  key: value
+            - name: TELEGRAM_ALLOW_FROM
+              valueFrom:
+                secretKeyRef:
+                  name: telegram-allow-from
+                  key: value
+          volumeMounts:
+            - name: config-template
+              mountPath: /templates
+            - name: config-rendered
+              mountPath: /config
       containers:
         - name: gateway
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
@@ -47,7 +70,6 @@ spec:
                 secretKeyRef:
                   name: telegram-token
                   key: value
-
             {{- with .Values.extraEnv }}
             {{- toYaml . | nindent 12 }}
             {{- end }}
@@ -70,13 +92,15 @@ spec:
           volumeMounts:
             - name: data
               mountPath: /home/node/.openclaw
-            - name: config
+            - name: config-rendered
               mountPath: /home/node/.openclaw/openclaw.json
               subPath: openclaw.json
       volumes:
-        - name: config
+        - name: config-template
           configMap:
-            name: openclaw-config
+            name: openclaw-config-template
+        - name: config-rendered
+          emptyDir: {}
   volumeClaimTemplates:
     - metadata:
         name: data

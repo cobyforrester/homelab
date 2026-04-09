@@ -1,10 +1,10 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: openclaw-config
+  name: openclaw-config-template
   namespace: {{ .Release.Namespace }}
 data:
-  openclaw.json: |
+  openclaw.json.tmpl: |
     {
       "gateway": {
         "bind": "lan",
@@ -18,7 +18,9 @@ data:
       },
       "channels": {
         "telegram": {
-          "dmPolicy": "pairing"
+          "botToken": "${TELEGRAM_BOT_TOKEN}",
+          "dmPolicy": "allowlist",
+          "allowFrom": [${TELEGRAM_ALLOW_FROM}]
         }
       }
     }
