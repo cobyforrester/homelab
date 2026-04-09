@@ -1,0 +1,33 @@
+# argocd-app.yaml
+# Apply this to the cluster where ArgoCD is running:
+#   kubectl apply -f argocd-app.yaml -n argocd
+#
+# Assumes the chart lives at charts/openclaw/ in your GitOps repo.
+# Adjust repoURL, targetRevision, and path as needed.
+
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: openclaw
+  namespace: openclaw
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+  source:
+    repoURL: git@github.com:cobyforrester/homelab.git
+    targetRevision: HEAD
+    path: k8s/apps/vitagraphs
+    helm:
+      valueFiles:
+        - values.yaml
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: openclaw
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+      - ServerSideApply=true # needed for StatefulSet volumeClaimTemplates on re-sync

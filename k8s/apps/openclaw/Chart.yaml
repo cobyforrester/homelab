@@ -1,0 +1,8 @@
+apiVersion: v2
+name: openclaw
+description: Helm chart for OpenClaw AI agent gateway
+type: application
+version: 0.1.0
+appVersion: "latest"
+keywords:
+  - openclaw

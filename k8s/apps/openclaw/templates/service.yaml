@@ -1,0 +1,27 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: openclaw-headless
+  namespace: { { .Release.Namespace } }
+  labels:
+    app: openclaw
+spec:
+  clusterIP: None
+  selector:
+    app: openclaw
+  ports:
+    - port: 18789
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: openclaw
+  namespace: { { .Release.Namespace } }
+  labels:
+    app: openclaw
+spec:
+  type: ClusterIP
+  selector:
+    app: openclaw
+  ports:
+    - port: 18789
