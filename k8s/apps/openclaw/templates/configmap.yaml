@@ -22,6 +22,13 @@ data:
           "allowFrom": [${TELEGRAM_ALLOW_FROM}]
         }
       },
+      "agents": {
+        "defaults": {
+          "model": {
+            "primary": "google/gemini-3-flash-preview"
+          }
+        }
+      },
       "models": {
         "providers": {
           "gemini": {
