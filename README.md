@@ -195,6 +195,29 @@ $ kubectl create namespace argocd
 $ kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml --server-side --force-conflicts
 ```
 
+### OpenClaw Token Secret
+
+Generate and apply the secret manually (never commit the real token):
+
+```bash
+# Generate a secure token
+TOKEN=$(openssl rand -hex 32)
+
+# Create the secret
+kubectl create secret generic openclaw-token \
+  --from-literal=value=$TOKEN \
+  --namespace=openclaw
+# Save the token somewhere safe (1Password, etc.)
+echo $TOKEN
+```
+
+To retrieve the token later:
+
+```bash
+kubectl get secret openclaw-token -n openclaw \
+  -o jsonpath='{.data.value}' | base64 --decode; echo
+```
+
 # Maintaining
 
 ### Connect to Control Node From Laptop
