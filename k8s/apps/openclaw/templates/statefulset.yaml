@@ -25,7 +25,7 @@ spec:
         - name: gateway
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: IfNotPresent
-          command: ["node", "dist/index.js", "gateway", "--bind", "lan", "--port", "18789"]
+          command: ["node", "dist/index.js", "gateway", "--bind", "lan", "--port", "18789", "--allow-unconfigured"]
           securityContext:
             runAsUser: 1000
             runAsGroup: 1000
