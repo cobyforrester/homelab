@@ -14,10 +14,11 @@ data:
         },
         "auth": {
           "mode": "token"
-        },
-        "channels": {
-          "telegram": {
-            "dmPolicy": "pairing"
+        }
+      },
+      "channels": {
+        "telegram": {
+          "dmPolicy": "pairing"
         }
       }
     }
