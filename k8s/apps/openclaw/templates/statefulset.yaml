@@ -49,14 +49,14 @@ spec:
             httpGet:
               path: /healthz
               port: 18789
-            initialDelaySeconds: 30
+            initialDelaySeconds: 75
             periodSeconds: 15
             failureThreshold: 5
           readinessProbe:
             httpGet:
               path: /readyz
               port: 18789
-            initialDelaySeconds: 15
+            initialDelaySeconds: 60
             periodSeconds: 10
             failureThreshold: 3
           resources:
