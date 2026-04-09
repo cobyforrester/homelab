@@ -24,9 +24,8 @@ spec:
         - name: config-init
           image: alpine:3.19
           securityContext:
-            runAsUser: 1000
-            runAsGroup: 1000
-            runAsNonRoot: true
+            runAsUser: 0
+            runAsNonRoot: false
             allowPrivilegeEscalation: false
             capabilities:
               drop: ["ALL"]
