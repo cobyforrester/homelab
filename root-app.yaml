@@ -1,0 +1,19 @@
+# root-app.yaml - apply this once manually
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: root
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: git@github.com:cobyforrester/homelab.git
+    targetRevision: HEAD
+    path: k8s/apps # directory containing your argocd Application YAMLs
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: argocd
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true

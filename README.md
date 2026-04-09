@@ -136,7 +136,7 @@ $ sudo chown $(id -u):$(id -g) $HOME/.kube/config
 Save output join command for later, 1Password works. Something like
 
 ```bash
-$ ubeadm join 192.168.0.52:6443 --token w8m6hp.6t2tcjpjjkgoh9uo \
+$ kubeadm join 192.168.0.52:6443 --token w8m6hp.6t2tcjpjjkgoh9uo \
 	--discovery-token-ca-cert-hash sha256...
 ```
 
@@ -162,11 +162,11 @@ $ helm repo add cilium https://helm.cilium.io/
 $ helm repo update
 
 # install cilium to cluster
-$ API_SERVER_IP=<SERVER_IP> API_SERVER_PORT=6443 helm install cilium cilium/cilium \
+$ API_SERVER_IP=192.168.0.52 API_SERVER_PORT=6443 helm install cilium cilium/cilium \
     --namespace kube-system \
     --set kubeProxyReplacement=true \
-    --set k8sServiceHost=${API_SERVER_IP} \
-    --set k8sServicePort=${API_SERVER_PORT}
+    --set k8sServiceHost=192.168.0.52 \
+    --set k8sServicePort=6443
 ```
 
 ### Remove Taint
@@ -183,7 +183,7 @@ One off installation to manage everything!
 
 ```bash
 $ kubectl create namespace argocd
-$ kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
+$ kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml --server-side --force-conflicts
 ```
 
 # Maintaining
@@ -193,7 +193,7 @@ $ kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/
 For running kubectl commands and maintaining, very useful for port forwarding. Note, to get this to work in Iterm2 on MacOS I had to give Iterm2 local network permissions, and to do that I had to restart Iterm2 and run `telnet <RPI_IP> 6443`. Not the most fun thing to figure out, also a transient fix so I recommend other terminals when possible.
 
 ```bash
-$ ssh $USERNAME@$PI_IP_ADDRESS$ "sudo cat /etc/kubernetes/admin.conf" > ~/.kube/config-pi
+$ ssh cobyforrester@192.168.0.52 "sudo cat /etc/kubernetes/admin.conf" > ~/.kube/config-pi
 $ export KUBECONFIG=~/.kube/config-pi
 ```
 
@@ -229,4 +229,16 @@ kubectl apply --server-side -f \
 # PG Image
 kubectl apply -f \
   https://raw.githubusercontent.com/cloudnative-pg/artifacts/refs/heads/main/image-catalogs/catalog-minimal-trixie.yaml
+```
+
+### Snapshots
+
+I have already had it where a power outage corrupts everything, this may help:
+
+```bash
+sudo ETCDCTL_API=3 etcdctl snapshot save /var/lib/etcd-backup/snapshot.db \
+  --endpoints=127.0.0.1:2379 \
+  --cacert=/etc/kubernetes/pki/etcd/ca.crt \
+  --cert=/etc/kubernetes/pki/etcd/server.crt \
+  --key=/etc/kubernetes/pki/etcd/server.key
 ```
