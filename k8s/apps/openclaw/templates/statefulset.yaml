@@ -17,8 +17,6 @@ spec:
     metadata:
       labels:
         app: openclaw
-      annotations:
-        checksum/secret: {{ include (print $.Template.BasePath "/secret.yaml") . | sha256sum }}
     spec:
       securityContext:
         fsGroup: 1000
