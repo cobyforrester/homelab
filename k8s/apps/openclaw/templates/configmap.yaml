@@ -14,6 +14,10 @@ data:
         },
         "auth": {
           "mode": "token"
+        },
+        "channels": {
+          "telegram": {
+            "dmPolicy": "pairing"
         }
       }
     }

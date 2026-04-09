@@ -195,9 +195,11 @@ $ kubectl create namespace argocd
 $ kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml --server-side --force-conflicts
 ```
 
-### OpenClaw Token Secret
+### Secrets
 
 Generate and apply the secret manually (never commit the real token):
+
+openclaw-token
 
 ```bash
 # Generate a secure token
@@ -216,6 +218,14 @@ To retrieve the token later:
 ```bash
 kubectl get secret openclaw-token -n openclaw \
   -o jsonpath='{.data.value}' | base64 --decode; echo
+```
+
+Telegram Bot Token
+
+```bash
+  kubectl create secret generic telegram-token \
+    --from-literal=value=$YOUR_BOT_TOKEN \
+    --namespace=openclaw
 ```
 
 # Maintaining

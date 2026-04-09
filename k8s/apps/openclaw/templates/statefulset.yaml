@@ -42,6 +42,12 @@ spec:
                   key: value
             - name: OPENCLAW_GATEWAY_MODE
               value: "remote"
+            - name: TELEGRAM_BOT_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: telegram-token
+                  key: value
+
             {{- with .Values.extraEnv }}
             {{- toYaml . | nindent 12 }}
             {{- end }}
@@ -49,14 +55,14 @@ spec:
             httpGet:
               path: /healthz
               port: 18789
-            initialDelaySeconds: 75
+            initialDelaySeconds: 30
             periodSeconds: 15
             failureThreshold: 5
           readinessProbe:
             httpGet:
               path: /readyz
               port: 18789
-            initialDelaySeconds: 60
+            initialDelaySeconds: 15
             periodSeconds: 10
             failureThreshold: 3
           resources:
@@ -69,8 +75,8 @@ spec:
               subPath: openclaw.json
       volumes:
         - name: config
-          configMap:
-            name: openclaw-config
+          secret:
+            secretName: openclaw-config
   volumeClaimTemplates:
     - metadata:
         name: data
