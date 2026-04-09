@@ -41,6 +41,8 @@ spec:
                 secretKeyRef:
                   name: openclaw-token
                   key: value
+            - name: OPENCLAW_GATEWAY_MODE
+              value: "remote"
             - name: OPENCLAW_GATEWAY_BIND
               value: "lan"
             {{- with .Values.extraEnv }}
