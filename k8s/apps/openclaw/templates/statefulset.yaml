@@ -25,6 +25,7 @@ spec:
         - name: gateway
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: IfNotPresent
+          command: ["node", "dist/index.js", "gateway", "--bind", "lan", "--port", "18789"]
           securityContext:
             runAsUser: 1000
             runAsGroup: 1000
@@ -41,8 +42,6 @@ spec:
                   key: value
             - name: OPENCLAW_GATEWAY_MODE
               value: "remote"
-            - name: OPENCLAW_GATEWAY_BIND
-              value: "lan"
             {{- with .Values.extraEnv }}
             {{- toYaml . | nindent 12 }}
             {{- end }}
