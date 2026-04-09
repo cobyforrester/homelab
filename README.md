@@ -93,6 +93,15 @@ Easy way to enable cgroup on the pi.
 $ sudo sed -i '$ s/$/ cgroup_enable=cpuset cgroup_enable=memory cgroup_memory=1 swapaccount=1/' /boot/firmware/cmdline.txt
 ```
 
+### Persistent Storage
+
+```bash
+$ git clone https://github.com/rancher/local-path-provisioner.git
+$ cd local-path-provisioner
+$ helm install local-path-storage --namespace local-path-storage --create-namespace ./deploy/chart/local-path-provisioner
+$ kubectl patch storageclass local-path -p '{"metadata": {"annotations":{"storageclass.kubernetes.io/is-default-class":"true"}}}'
+```
+
 ### Kubernetes Tooling
 
 Followed [docs](https://kubernetes.io/docs/tasks/tools/install-kubectl-linux/#install-using-native-package-management)
