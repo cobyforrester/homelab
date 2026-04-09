@@ -32,7 +32,7 @@ spec:
           command:
             - sh
             - -c
-            - apk add --no-cache gettext && envsubst '${TELEGRAM_BOT_TOKEN} ${TELEGRAM_ALLOW_FROM}' < /templates/openclaw.json.tmpl > /config/openclaw.json
+            - apk add --no-cache gettext && envsubst '${TELEGRAM_BOT_TOKEN} ${TELEGRAM_ALLOW_FROM} ${GOOGLE_API_KEY}' < /templates/openclaw.json.tmpl > /config/openclaw.json
           env:
             - name: TELEGRAM_BOT_TOKEN
               valueFrom:
@@ -43,6 +43,11 @@ spec:
               valueFrom:
                 secretKeyRef:
                   name: telegram-allow-from
+                  key: value
+            - name: GOOGLE_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: google-api-key
                   key: value
           volumeMounts:
             - name: config-template

@@ -236,6 +236,14 @@ Telegram Allow From
     --namespace=openclaw
 ```
 
+Google API Key
+
+```bash
+  kubectl create secret generic google-api-key \
+    --from-literal=value=$YOUR_GOOGLE_API_KEY \
+    --namespace=openclaw
+```
+
 # Maintaining
 
 ### Connect to Control Node From Laptop

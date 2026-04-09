@@ -21,5 +21,12 @@ data:
           "dmPolicy": "allowlist",
           "allowFrom": [${TELEGRAM_ALLOW_FROM}]
         }
+      },
+      "models": {
+        "providers": {
+          "gemini": {
+            "apiKey": "${GOOGLE_API_KEY}"
+          }
+        }
       }
     }
