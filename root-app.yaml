@@ -9,7 +9,7 @@ spec:
   source:
     repoURL: git@github.com:cobyforrester/homelab.git
     targetRevision: HEAD
-    path: k8s/apps # directory containing your argocd Application YAMLs
+    path: k8s/argocd # directory containing your argocd Application YAMLs
   destination:
     server: https://kubernetes.default.svc
     namespace: argocd
