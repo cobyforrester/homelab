@@ -2,7 +2,6 @@ apiVersion: apps/v1
 kind: StatefulSet
 metadata:
   name: openclaw
-  namespace: {{ .Release.Namespace }}
   labels:
     app: openclaw
 spec:
