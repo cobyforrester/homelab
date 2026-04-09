@@ -22,7 +22,7 @@ spec:
         runAsNonRoot: true
       initContainers:
         - name: config-init
-          image: busybox:1.36
+          image: bhgedigital/envsubst
           securityContext:
             runAsUser: 1000
             runAsGroup: 1000
