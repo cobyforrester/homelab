@@ -22,7 +22,7 @@ spec:
         runAsNonRoot: true
       initContainers:
         - name: config-init
-          image: bhgedigital/envsubst
+          image: alpine:3.19
           securityContext:
             runAsUser: 1000
             runAsGroup: 1000
@@ -33,7 +33,7 @@ spec:
           command:
             - sh
             - -c
-            - envsubst '${TELEGRAM_BOT_TOKEN} ${TELEGRAM_ALLOW_FROM}' < /templates/openclaw.json.tmpl > /config/openclaw.json
+            - apk add --no-cache gettext && envsubst '${TELEGRAM_BOT_TOKEN} ${TELEGRAM_ALLOW_FROM}' < /templates/openclaw.json.tmpl > /config/openclaw.json
           env:
             - name: TELEGRAM_BOT_TOKEN
               valueFrom:
