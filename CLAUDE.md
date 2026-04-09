@@ -9,6 +9,7 @@ This is a Kubernetes homelab running on Raspberry Pi 5s, managed through GitOps 
 ## Architecture
 
 **Infrastructure Stack:**
+
 - Compute: Raspberry Pi 5s
 - CRI: containerd
 - CNI: Cilium (kube-proxy-free)
@@ -16,6 +17,7 @@ This is a Kubernetes homelab running on Raspberry Pi 5s, managed through GitOps 
 - Package Management: Helm charts
 
 **Directory Structure:**
+
 - `k8s/apps/`: Helm charts for applications deployed to the cluster
 - `k8s/argocd/`: ArgoCD Application manifests that reference Helm charts in `k8s/apps/`
 
@@ -24,6 +26,7 @@ This is a Kubernetes homelab running on Raspberry Pi 5s, managed through GitOps 
 All changes to the cluster are made by modifying files in this repository. ArgoCD watches this repo and automatically applies changes to the cluster.
 
 **To deploy a new application:**
+
 1. Create a Helm chart in `k8s/apps/<app-name>/`
    - `Chart.yaml`: Chart metadata
    - `values.yaml`: Default values (can be mostly empty)
@@ -32,6 +35,7 @@ All changes to the cluster are made by modifying files in this repository. ArgoC
 3. Commit and push - ArgoCD will automatically deploy
 
 **ArgoCD Application Pattern:**
+
 ```yaml
 apiVersion: argoproj.io/v1alpha1
 kind: Application
@@ -71,7 +75,13 @@ export KUBECONFIG=~/.kube/config-pi
 kubectl get nodes
 ```
 
-### ArgoCD Access
+### ArgoCD
+
+On first init, need to run this to get apps spun up.
+
+```bash
+kubectl apply -f root-app.yaml -n argocd
+```
 
 ```bash
 # Port forward to ArgoCD server
