@@ -75,8 +75,8 @@ spec:
               subPath: openclaw.json
       volumes:
         - name: config
-          secret:
-            secretName: openclaw-config
+          configMap:
+            name: openclaw-config
   volumeClaimTemplates:
     - metadata:
         name: data
