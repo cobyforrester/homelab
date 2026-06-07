@@ -178,6 +178,46 @@ $ API_SERVER_IP=192.168.0.52 API_SERVER_PORT=6443 helm install cilium cilium/cil
     --set k8sServicePort=6443
 ```
 
+### Cilium LAN Ingress
+
+This lets apps have stable LAN names instead of needing `kubectl port-forward`.
+The cluster uses Cilium's ingress controller, load balancer IPAM, and L2 announcements
+instead of MetalLB or another ingress controller.
+
+Load balancer IPAM means Cilium is allowed to hand out IPs from a small LAN pool.
+L2 announcements means Cilium tells the LAN which node is currently serving that IP.
+In this setup, Cilium can serve `192.168.0.80` from the cluster and move it if needed.
+
+`home.arpa` is the standard special-use domain for home networks, so local app names
+can look like `calibre.home.arpa`.
+
+If Cilium was already installed without ingress and L2 announcements, update it:
+
+```bash
+$ helm upgrade cilium cilium/cilium \
+    --namespace kube-system \
+    --reuse-values \
+    --set ingressController.enabled=true \
+    --set ingressController.loadbalancerMode=shared \
+    --set l2announcements.enabled=true
+```
+
+The GitOps `networking` app creates a Cilium load balancer pool with `192.168.0.80/32`
+and an L2 announcement policy. Pick an IP outside the router DHCP range. If `192.168.0.80`
+is not free, change `k8s/apps/networking/values.yaml`.
+
+Then add router DNS records pointing at that shared ingress IP:
+
+```text
+calibre.home.arpa -> 192.168.0.80
+```
+
+After ArgoCD syncs, Calibre should be available on the LAN:
+
+```text
+http://calibre.home.arpa
+```
+
 ### Remove Taint
 
 Allows data plane (workers) to run on the control plane node.
