@@ -1,0 +1,18 @@
+image:
+  repository: lscr.io/linuxserver/calibre-web
+  tag: "latest"
+
+timezone: America/Chicago
+
+storage:
+  configSize: 1Gi
+  booksSize: 20Gi
+  storageClassName: local-path
+
+resources:
+  requests:
+    memory: "256Mi"
+    cpu: "100m"
+  limits:
+    memory: "1Gi"
+    cpu: "500m"

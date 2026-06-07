@@ -1,0 +1,11 @@
+apiVersion: v2
+name: calibre
+description: Helm chart for a LAN-local Calibre-Web ebook library
+type: application
+version: 0.1.0
+appVersion: "latest"
+keywords:
+  - calibre-web
+  - calibre
+  - ebooks
+  - kobo
