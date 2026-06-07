@@ -42,7 +42,8 @@ spec:
               port: 8083
             initialDelaySeconds: 60
             periodSeconds: 30
-          resources: { { - toYaml .Values.resources | nindent 12 } }
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
           volumeMounts:
             - name: config
               mountPath: /config
