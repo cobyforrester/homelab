@@ -210,12 +210,14 @@ Then add router DNS records pointing at that shared ingress IP:
 
 ```text
 calibre.home.arpa -> 192.168.0.80
+argocd.home.arpa -> 192.168.0.80
 ```
 
-After ArgoCD syncs, Calibre should be available on the LAN:
+After ArgoCD syncs, apps should be available on the LAN:
 
 ```text
 http://calibre.home.arpa
+http://argocd.home.arpa
 ```
 
 ### Remove Taint

@@ -1,0 +1,3 @@
+loadBalancer:
+  # Pick an IP outside the router DHCP range.
+  cidr: 192.168.0.80/32
