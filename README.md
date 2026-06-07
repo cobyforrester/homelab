@@ -238,10 +238,12 @@ Telegram Allow From
 
 Google API Key
 
+This was too expensive so I commented it out, but this is how to add a secret.
+
 ```bash
-  kubectl create secret generic google-api-key \
-    --from-literal=value=$YOUR_GOOGLE_API_KEY \
-    --namespace=openclaw
+  # kubectl create secret generic google-api-key \
+  #  --from-literal=value=$YOUR_GOOGLE_API_KEY \
+  #  --namespace=openclaw
 ```
 
 # Maintaining

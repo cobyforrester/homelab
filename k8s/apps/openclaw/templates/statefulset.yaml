@@ -75,11 +75,12 @@ spec:
                 secretKeyRef:
                   name: telegram-token
                   key: value
-            - name: GEMINI_API_KEY
-              valueFrom:
-                secretKeyRef:
-                  name: google-api-key
-                  key: value
+            # too expensive
+            # - name: GEMINI_API_KEY
+            #   valueFrom:
+            #     secretKeyRef:
+            #       name: google-api-key
+            #       key: value
             {{- with .Values.extraEnv }}
             {{- toYaml . | nindent 12 }}
             {{- end }}
