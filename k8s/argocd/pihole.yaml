@@ -24,9 +24,9 @@ spec:
         dns:
           preset: basic
           customRecords:
-            - "192.168.0.2 calibre.local"
-            - "192.168.0.2 argocd.local"
-            - "192.168.0.2 pihole.local"
+            - "192.168.0.2 calibre.home.arpa"
+            - "192.168.0.2 argocd.home.arpa"
+            - "192.168.0.2 pihole.home.arpa"
 
         serviceDns:
           type: LoadBalancer
@@ -41,7 +41,7 @@ spec:
           enabled: true
           ingressClassName: cilium
           hosts:
-            - host: pihole.local
+            - host: pihole.home.arpa
               paths:
                 - path: /
                   pathType: Prefix

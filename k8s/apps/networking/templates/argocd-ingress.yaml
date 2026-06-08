@@ -6,7 +6,7 @@ metadata:
 spec:
   ingressClassName: cilium
   rules:
-    - host: argocd.local
+    - host: argocd.home.arpa
       http:
         paths:
           - path: /

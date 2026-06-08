@@ -7,7 +7,7 @@ metadata:
 spec:
   ingressClassName: cilium
   rules:
-    - host: calibre.local
+    - host: calibre.home.arpa
       http:
         paths:
           - path: /

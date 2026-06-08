@@ -252,12 +252,12 @@ This was too expensive so I commented it out, but this is how to add a secret.
 
 ## Local DNS And LAN App Access
 
-Local app names use `.local` because it is short and nice to type, but `home.arpa` is the standard.
+Local app names use `home.arpa`, the standard home-network domain.
 
 ```text
-http://calibre.local
-http://argocd.local
-http://pihole.local
+http://calibre.home.arpa
+http://argocd.home.arpa
+http://pihole.home.arpa
 ...
 ```
 
