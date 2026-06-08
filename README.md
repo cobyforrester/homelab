@@ -275,7 +275,7 @@ That keeps `.2` and `.3` out of the automatic device pool.
 
 ### Cilium
 
-The GitOps `networking` app creates the Cilium IP pool and L2 announcement policy. L2 announcements means Cilium tells the LAN which node is currently serving those IPs.
+The GitOps `networking` app creates the Cilium IP pool and L2 announcement policy. L2 announcements means Cilium tells the LAN which node is currently serving those IPs. Announcements use `eth0` on any eligible node, so another Pi can take over if the current announcer goes down.
 
 The Cilium IP pool only says which IPs are allowed. Each `LoadBalancer` service still
 asks for the exact IP it wants:
