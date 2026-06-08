@@ -392,3 +392,14 @@ sudo ETCDCTL_API=3 etcdctl snapshot save /var/lib/etcd-backup/snapshot.db \
   --cert=/etc/kubernetes/pki/etcd/server.crt \
   --key=/etc/kubernetes/pki/etcd/server.key
 ```
+
+### In Case Of Pi-Hole Disruption
+
+Since the DNS server is set to a local pod, if that pod is disrupted, then the DNS resolution for the local network will be disrupted. This will look like no webpages loading, but you can still load the router UI at http://192.168.0.1.
+
+Resolve by either fixing the Pi-Hole device, or resetting the router to use the non-managed DNS server (default). Do this by:
+
+1. Navigate to http://192.168.0.1
+2. Login, username `admin` and password is the WiFi password.
+3. Navigate to Connection -> Local IP Network -> IPv4. From here check `Enable IPv4/IPv6 DNS Relay`, and for `LAN DNS` click `Obtained automatically`. Then save.
+4. Disconnect and reconnect to the WiFi, can take several minutes to reset.
