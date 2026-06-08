@@ -5,6 +5,10 @@ metadata:
   namespace: argocd
 spec:
   ingressClassName: cilium
+  tls:
+    - hosts:
+        - argocd.home.arpa
+      secretName: home-arpa-tls
   rules:
     - host: argocd.home.arpa
       http:

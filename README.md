@@ -255,9 +255,9 @@ This was too expensive so I commented it out, but this is how to add a secret.
 Local app names use `home.arpa`, the standard home-network domain.
 
 ```text
-http://calibre.home.arpa
-http://argocd.home.arpa
-http://pihole.home.arpa
+https://calibre.home.arpa
+https://argocd.home.arpa
+https://pihole.home.arpa
 ...
 ```
 
@@ -303,6 +303,38 @@ $ kubectl create secret generic pihole-admin-secret \
 
 Once Cilium assigns `192.168.0.3`,
 set the router DNS server to `192.168.0.3`.
+
+### Local HTTPS
+
+Local HTTPS uses a self-signed wildcard cert. Browsers will warn until the cert is trusted on that device.
+
+Create one cert:
+
+```bash
+$ openssl req -x509 -newkey rsa:2048 -nodes -days 825 \
+    -keyout home-arpa.key \
+    -out home-arpa.crt \
+    -subj "/CN=*.home.arpa" \
+    -addext "subjectAltName=DNS:*.home.arpa,DNS:home.arpa"
+```
+
+Install the same cert secret into each app namespace:
+
+```bash
+$ kubectl -n calibre create secret tls home-arpa-tls \
+    --cert=home-arpa.crt \
+    --key=home-arpa.key
+
+$ kubectl -n argocd create secret tls home-arpa-tls \
+    --cert=home-arpa.crt \
+    --key=home-arpa.key
+
+$ kubectl -n pihole create secret tls home-arpa-tls \
+    --cert=home-arpa.crt \
+    --key=home-arpa.key
+```
+
+Sync Argo after creating the secrets.
 
 # Maintaining
 

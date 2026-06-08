@@ -44,6 +44,10 @@ spec:
         ingress:
           enabled: true
           ingressClassName: cilium
+          tls:
+            - secretName: home-arpa-tls
+              hosts:
+                - pihole.home.arpa
           hosts:
             - host: pihole.home.arpa
               paths:

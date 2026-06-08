@@ -6,6 +6,10 @@ metadata:
     app: calibre
 spec:
   ingressClassName: cilium
+  tls:
+    - hosts:
+        - calibre.home.arpa
+      secretName: home-arpa-tls
   rules:
     - host: calibre.home.arpa
       http:
