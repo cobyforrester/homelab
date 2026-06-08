@@ -1,0 +1,56 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: pihole
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+  source:
+    repoURL: https://repo.helmforge.dev
+    chart: pihole
+    targetRevision: 2.0.9
+    helm:
+      values: |
+        admin:
+          existingSecret: pihole-admin-secret
+          existingSecretKey: password
+
+        pihole:
+          timezone: America/Chicago
+          listeningMode: ALL
+
+        dns:
+          preset: basic
+          customRecords:
+            - "192.168.0.2 calibre.local"
+            - "192.168.0.2 argocd.local"
+            - "192.168.0.2 pihole.local"
+
+        serviceDns:
+          type: LoadBalancer
+          loadBalancerIP: "192.168.0.3"
+
+        persistence:
+          enabled: true
+          size: 2Gi
+          storageClass: local-path
+
+        ingress:
+          enabled: true
+          ingressClassName: cilium
+          hosts:
+            - host: pihole.local
+              paths:
+                - path: /
+                  pathType: Prefix
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: pihole
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true

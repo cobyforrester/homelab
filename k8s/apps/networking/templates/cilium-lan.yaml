@@ -4,7 +4,9 @@ metadata:
   name: lan
 spec:
   blocks:
-    - cidr: "{{ .Values.loadBalancer.cidr }}"
+    {{- range .Values.loadBalancer.cidrs }}
+    - cidr: "{{ . }}"
+    {{- end }}
 ---
 apiVersion: cilium.io/v2alpha1
 kind: CiliumL2AnnouncementPolicy

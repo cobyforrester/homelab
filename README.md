@@ -175,49 +175,11 @@ $ API_SERVER_IP=192.168.0.52 API_SERVER_PORT=6443 helm install cilium cilium/cil
     --namespace kube-system \
     --set kubeProxyReplacement=true \
     --set k8sServiceHost=192.168.0.52 \
-    --set k8sServicePort=6443
-```
-
-### Cilium LAN Ingress
-
-This lets apps have stable LAN names instead of needing `kubectl port-forward`.
-The cluster uses Cilium's ingress controller, load balancer IPAM, and L2 announcements
-instead of MetalLB or another ingress controller.
-
-Load balancer IPAM means Cilium is allowed to hand out IPs from a small LAN pool.
-L2 announcements means Cilium tells the LAN which node is currently serving that IP.
-In this setup, Cilium can serve `192.168.0.80` from the cluster and move it if needed.
-
-`home.arpa` is the standard special-use domain for home networks, so local app names
-can look like `calibre.home.arpa`.
-
-If Cilium was already installed without ingress and L2 announcements, update it:
-
-```bash
-$ helm upgrade cilium cilium/cilium \
-    --namespace kube-system \
-    --reuse-values \
+    --set k8sServicePort=6443 \
     --set ingressController.enabled=true \
     --set ingressController.loadbalancerMode=shared \
+    --set ingressController.service.loadBalancerIP=192.168.0.2 \
     --set l2announcements.enabled=true
-```
-
-The GitOps `networking` app creates a Cilium load balancer pool with `192.168.0.80/32`
-and an L2 announcement policy. Pick an IP outside the router DHCP range. If `192.168.0.80`
-is not free, change `k8s/apps/networking/values.yaml`.
-
-Then add router DNS records pointing at that shared ingress IP:
-
-```text
-calibre.home.arpa -> 192.168.0.80
-argocd.home.arpa -> 192.168.0.80
-```
-
-After ArgoCD syncs, apps should be available on the LAN:
-
-```text
-http://calibre.home.arpa
-http://argocd.home.arpa
 ```
 
 ### Remove Taint
@@ -287,6 +249,60 @@ This was too expensive so I commented it out, but this is how to add a secret.
   #  --from-literal=value=$YOUR_GOOGLE_API_KEY \
   #  --namespace=openclaw
 ```
+
+## Local DNS And LAN App Access
+
+Local app names use `.local` because it is short and nice to type, but `home.arpa` is the standard.
+
+```text
+http://calibre.local
+http://argocd.local
+http://pihole.local
+...
+```
+
+### Router Range
+
+Two LAN IPs are reserved by limiting the router DHCP range to `.4` - `.253`,
+making these safe to hardcode:
+
+```text
+192.168.0.2 # shared web ingress for apps
+192.168.0.3 # Pi-hole DNS
+```
+
+That keeps `.2` and `.3` out of the automatic device pool.
+
+### Cilium
+
+The GitOps `networking` app creates the Cilium IP pool and L2 announcement policy. L2 announcements means Cilium tells the LAN which node is currently serving those IPs.
+
+The Cilium IP pool only says which IPs are allowed. Each `LoadBalancer` service still
+asks for the exact IP it wants:
+
+If Cilium was installed before ingress and L2 announcements were enabled:
+
+```bash
+$ helm upgrade cilium cilium/cilium \
+    --namespace kube-system \
+    --reuse-values \
+    --set ingressController.enabled=true \
+    --set ingressController.loadbalancerMode=shared \
+    --set ingressController.service.loadBalancerIP=192.168.0.2 \
+    --set l2announcements.enabled=true
+```
+
+Pi-hole uses the HelmForge chart. Before syncing it, create the admin password secret:
+
+```bash
+$ kubectl create namespace pihole
+$ kubectl create secret generic pihole-admin-secret \
+    --from-literal=password=$PIHOLE_ADMIN_PASSWORD \
+    --namespace=pihole
+```
+
+Once Cilium assigns `192.168.0.3`,
+set the router DNS server to `192.168.0.3`.
 
 # Maintaining
 
