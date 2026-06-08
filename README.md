@@ -312,8 +312,8 @@ Create one cert:
 
 ```bash
 $ openssl req -x509 -newkey rsa:2048 -nodes -days 825 \
-    -keyout home-arpa.key \
-    -out home-arpa.crt \
+    -keyout /private/tmp/home-arpa.key \
+    -out /private/tmp/home-arpa.crt \
     -subj "/CN=*.home.arpa" \
     -addext "subjectAltName=DNS:*.home.arpa,DNS:home.arpa"
 ```
@@ -322,16 +322,16 @@ Install the same cert secret into each app namespace:
 
 ```bash
 $ kubectl -n calibre create secret tls home-arpa-tls \
-    --cert=home-arpa.crt \
-    --key=home-arpa.key
+    --cert=/private/tmp/home-arpa.crt \
+    --key=/private/tmp/home-arpa.key
 
 $ kubectl -n argocd create secret tls home-arpa-tls \
-    --cert=home-arpa.crt \
-    --key=home-arpa.key
+    --cert=/private/tmp/home-arpa.crt \
+    --key=/private/tmp/home-arpa.key
 
 $ kubectl -n pihole create secret tls home-arpa-tls \
-    --cert=home-arpa.crt \
-    --key=home-arpa.key
+    --cert=/private/tmp/home-arpa.crt \
+    --key=/private/tmp/home-arpa.key
 ```
 
 Sync Argo after creating the secrets.
