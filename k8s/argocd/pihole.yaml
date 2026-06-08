@@ -20,6 +20,12 @@ spec:
         pihole:
           timezone: America/Chicago
           listeningMode: ALL
+          extraEnv:
+            - name: FTLCONF_dns_hosts
+              value: |-
+                192.168.0.2 calibre.home.arpa
+                192.168.0.2 argocd.home.arpa
+                192.168.0.2 pihole.home.arpa
 
         dns:
           preset: basic
