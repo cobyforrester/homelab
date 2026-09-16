@@ -256,7 +256,7 @@ Local app names use `home.arpa`, the standard home-network domain.
 
 ```text
 https://calibre.home.arpa
-https://plex.home.arpa
+https://jellyfin.home.arpa
 https://argocd.home.arpa
 https://pihole.home.arpa
 ...
@@ -326,7 +326,7 @@ $ kubectl -n calibre create secret tls home-arpa-tls \
     --cert=/private/tmp/home-arpa.crt \
     --key=/private/tmp/home-arpa.key
 
-$ kubectl -n plex create secret tls home-arpa-tls \
+$ kubectl -n jellyfin create secret tls home-arpa-tls \
     --cert=/private/tmp/home-arpa.crt \
     --key=/private/tmp/home-arpa.key
 
