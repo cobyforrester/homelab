@@ -1,0 +1,18 @@
+image:
+  repository: lscr.io/linuxserver/plex
+  tag: "latest"
+
+timezone: America/Chicago
+
+storage:
+  configSize: 1Gi
+  mediaSize: 500Gi
+  storageClassName: local-path
+
+resources:
+  requests:
+    memory: "512Mi"
+    cpu: "250m"
+  limits:
+    memory: "2Gi"
+    cpu: "1000m"

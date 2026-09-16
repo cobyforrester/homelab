@@ -256,6 +256,7 @@ Local app names use `home.arpa`, the standard home-network domain.
 
 ```text
 https://calibre.home.arpa
+https://plex.home.arpa
 https://argocd.home.arpa
 https://pihole.home.arpa
 ...
@@ -322,6 +323,10 @@ Install the same cert secret into each app namespace:
 
 ```bash
 $ kubectl -n calibre create secret tls home-arpa-tls \
+    --cert=/private/tmp/home-arpa.crt \
+    --key=/private/tmp/home-arpa.key
+
+$ kubectl -n plex create secret tls home-arpa-tls \
     --cert=/private/tmp/home-arpa.crt \
     --key=/private/tmp/home-arpa.key
 
