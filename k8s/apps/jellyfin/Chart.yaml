@@ -1,10 +1,10 @@
 apiVersion: v2
-name: plex
-description: Helm chart for a LAN-local Plex Media Server
+name: jellyfin
+description: Helm chart for a LAN-local Jellyfin media server
 type: application
 version: 0.1.0
 appVersion: "latest"
 keywords:
-  - plex
+  - jellyfin
   - media
   - streaming

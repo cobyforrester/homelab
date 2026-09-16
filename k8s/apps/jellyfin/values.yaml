@@ -1,11 +1,11 @@
 image:
-  repository: lscr.io/linuxserver/plex
+  repository: lscr.io/linuxserver/jellyfin
   tag: "latest"
 
 timezone: America/Chicago
 
 storage:
-  configSize: 1Gi
+  configSize: 10Gi
   mediaSize: 500Gi
   storageClassName: local-path
 

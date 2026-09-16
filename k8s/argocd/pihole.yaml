@@ -27,12 +27,12 @@ spec:
             - "192.168.0.2 calibre.home.arpa"
             - "192.168.0.2 argocd.home.arpa"
             - "192.168.0.2 pihole.home.arpa"
-            - "192.168.0.2 plex.home.arpa"
+            - "192.168.0.2 jellyfin.home.arpa"
           customDnsmasq:
             - "address=/calibre.home.arpa/192.168.0.2"
             - "address=/argocd.home.arpa/192.168.0.2"
             - "address=/pihole.home.arpa/192.168.0.2"
-            - "address=/plex.home.arpa/192.168.0.2"
+            - "address=/jellyfin.home.arpa/192.168.0.2"
 
         serviceDns:
           type: LoadBalancer

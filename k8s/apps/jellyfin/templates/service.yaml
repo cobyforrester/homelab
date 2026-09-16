@@ -1,14 +1,14 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: plex
+  name: jellyfin
   labels:
-    app: plex
+    app: jellyfin
 spec:
   type: ClusterIP
   selector:
-    app: plex
+    app: jellyfin
   ports:
     - name: http
-      port: 32400
-      targetPort: 32400
+      port: 8096
+      targetPort: 8096
